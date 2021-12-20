@@ -1,0 +1,20 @@
+<main>
+  <img class="sp-logo" src="assets/images/superpowered-black.svg"/>
+  <img class="angular-logo" src="assets/images/angular_solidBlack.svg"/>
+  <h3>The following example will take your microphone and <br />pass it through WebAssembly Superpowered Reverb</h3>
+  <h4 class="headphone-warning">Please wear headphones or turn down you speakers!</h4>
+  <button mat-raised-button *ngIf="!booted" (click)="boot()" color="primary">Boot reverb</button>
+  
+  <div class="controls-container" *ngIf="uiDefinitions">
+    <div class="control-container" *ngFor="let parameter of uiDefinitions.parameters">
+      <mat-slider (input)="onParameterChange($event, parameter.id)" id="{{parameter.id}}" [vertical]="true" thumbLabel  min="{{parameter.min}}" max="{{parameter.max}}" step="{{parameter.step}}" value="{{parameter.defaultValue}}"></mat-slider>
+      <span>{{parameter.label}}</span>
+    </div>
+  </div>
+
+  <div class="engine-stats" *ngIf="booted">
+    <span>Sample rate: {{engineStats.sampleRate/1000}} kHz</span>
+    <span>Estimated latecy: {{engineStats.estimatedLatency.toFixed(3)}} s</span>
+  </div>
+
+</main>
