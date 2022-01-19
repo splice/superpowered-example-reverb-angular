@@ -90,7 +90,6 @@ class SuperpoweredReverbStageProcessor extends SuperpoweredWebAudio.AudioWorklet
 
     // messages are received from the main scope through this method.
     onMessageFromMainScope(message) {
-        console.log(message)
         if (message.command === 'requestUiDefinitions') {
             this.sendMessageToMainScope({ uiDefinitions: uiDefinitions });
         }
@@ -112,6 +111,10 @@ class SuperpoweredReverbStageProcessor extends SuperpoweredWebAudio.AudioWorklet
     }
 
     processAudio(inputBuffer, outputBuffer, buffersize, parameters) {
+        // Ensure the samplerate is in sync on every audio processing callback
+        this.reverb.samplerate = this.samplerate;
+
+	    // Render the output buffers
         if (this.reverb.process) this.reverb.process(inputBuffer.pointer, outputBuffer.pointer, buffersize);
         this.Superpowered.Volume(
             outputBuffer.pointer,
